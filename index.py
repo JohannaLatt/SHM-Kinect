@@ -17,14 +17,13 @@ def simulate_tracking():
             while stop_simulating.is_set():
                 pass
             Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_DATA.name, tracking_data_item)
-            time.sleep(.2)
-
+            time.sleep(.1)
 
 # Sample data
 stop_simulating = threading.Event()
 stop_simulating.set()
 
-sample_tracking_data = open('./data/sample_2.txt').read().splitlines()
+sample_tracking_data = open('./data/sample_teeth.txt').read().splitlines()
 
 simulation_thread = threading.Thread(target=simulate_tracking)
 simulation_thread.start()
