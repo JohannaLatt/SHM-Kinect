@@ -3,6 +3,7 @@ import threading
 import messaging as Messaging
 from messaging import MSG_TO_SERVER_KEYS
 import time
+import sys
 
 
 Messaging.init()
@@ -23,7 +24,7 @@ def simulate_tracking():
 stop_simulating = threading.Event()
 stop_simulating.set()
 
-sample_tracking_data = open('./data/sample-tracking-data.txt').read().splitlines()
+sample_tracking_data = open('./data/sample_2.txt').read().splitlines()
 
 simulation_thread = threading.Thread(target=simulate_tracking)
 simulation_thread.start()
@@ -33,7 +34,8 @@ while(True):
     if input_key == "q":
         stop_simulating.set()
         Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_LOST.name, '')
-        break
+        print('Exiting..')
+        sys.exit()
     elif input_key == "p":
         stop_simulating.set()
         Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_LOST.name, '')
