@@ -26,7 +26,9 @@ else:
 Messaging.init(args.verbose)
 
 # Simulation Thread
-_thread.start_new_thread(Messaging.start_sending, ())
+thread = threading.Thread(target=Messaging.start_sending)
+thread.daemon = True
+thread.start()
 
 stop_simulating = threading.Event()
 stop_simulating.set()
