@@ -10,7 +10,10 @@ class MSG_TO_SERVER_KEYS(Enum):
     TRACKING_LOST = 3
 
 
-def init():
+def init(verbose):
+    global v
+    v = verbose
+
     # Save the queue
     global queue
     queue = queue.Queue()
@@ -36,7 +39,8 @@ def start_sending():
             __channel.basic_publish(exchange='from-kinect',
                               routing_key=item['key'],
                               body=item['body'])
-            print("[info] Sent {}: {}".format(item['key'], item['body'][0:50]))
+            if v:
+                print("[info] Sent {}: {}".format(item['key'], item['body'][0:50]))
         except pika.exceptions.ConnectionClosed as cce:
             print('[error] %r' % cce)
         queue.task_done()
