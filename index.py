@@ -17,7 +17,7 @@ def simulate_tracking():
             while stop_simulating.is_set():
                 pass
             Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_DATA.name, tracking_data_item)
-            time.sleep(.1)
+            #time.sleep(.1)
 
 # Sample data
 stop_simulating = threading.Event()
