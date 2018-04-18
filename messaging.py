@@ -50,4 +50,6 @@ def send(key, body):
     if key not in MSG_TO_SERVER_KEYS.__members__:
         print("[error] %r is not a valid message key to send to the server" % key)
     else:
+        if key == MSG_TO_SERVER_KEYS.TRACKING_LOST.name:
+            queue.queue.clear()
         queue.put({'key': key, 'body': body})

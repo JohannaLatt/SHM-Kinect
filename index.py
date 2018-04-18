@@ -17,7 +17,7 @@ args = parser.parse_args()
 # Sample data
 sample_tracking_data = []
 if args.data is None:
-    sample_tracking_data = open('./data/sample_teeth.txt').read().splitlines()
+    sample_tracking_data = open('./data/sample.txt').read().splitlines()
 else:
     sample_tracking_data = open(args.data).read().splitlines()
 
@@ -59,6 +59,7 @@ while(True):
         Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_LOST.name, '')
     elif input_key == "t":
         if stop_simulating is not None:
+            print('Started tracking')
             Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_STARTED.name, '')
             stop_simulating.clear()
     else:
