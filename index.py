@@ -11,8 +11,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--data', help='path to file to use as sample data')
 parser.add_argument("-v", "--verbose", action="store_true",
                     help="increase output verbosity")
-
 args = parser.parse_args()
+
 
 # Sample data
 sample_tracking_data = []

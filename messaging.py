@@ -1,4 +1,4 @@
-import pika
+from amqpstorm import Connection
 from enum import Enum
 import configparser
 import queue
@@ -21,13 +21,13 @@ def init(verbose):
     # Create a local messaging connection
     Config = configparser.ConfigParser()
     Config.read('./config/kinect_config.ini')
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=Config.get('General', 'messaging_ip')))
+    connection = Connection(Config.get('General', 'messaging_ip'), 'guest', 'guest')
 
     global __channel
     __channel = connection.channel()
 
     # Create an exchange for the mirror-messages - type is direct so we can distinguish the different messages
-    __channel.exchange_declare(exchange='from-kinect', exchange_type='direct')
+    __channel.exchange.declare(exchange='from-kinect', exchange_type='direct')
 
 
 def start_sending():
@@ -35,14 +35,11 @@ def start_sending():
         item = queue.get()
         if item is None:
             continue
-        try:
-            __channel.basic_publish(exchange='from-kinect',
-                              routing_key=item['key'],
-                              body=item['body'])
-            if v:
-                print("[info] Sent {}: {}".format(item['key'], item['body'][0:50]))
-        except pika.exceptions.ConnectionClosed as cce:
-            print('[error] %r' % cce)
+        __channel.basic.publish(exchange='from-kinect',
+                          routing_key=item['key'],
+                          body=item['body'])
+        if v:
+            print("[info] Sent {}: {}".format(item['key'], item['body'][0:50]))
         queue.task_done()
 
 
