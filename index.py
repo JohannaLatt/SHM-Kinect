@@ -1,11 +1,11 @@
 import messaging as Messaging
 from messaging import MSG_TO_SERVER_KEYS
 
-import _thread
 import threading
 
 import argparse
 import sys
+import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data', help='path to file to use as sample data')
@@ -41,6 +41,7 @@ def simulate_tracking():
             while stop_simulating.is_set():
                 pass
             Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_DATA.name, tracking_data_item)
+            time.sleep(.09)
 
 
 simulation_thread = threading.Thread(target=simulate_tracking)
