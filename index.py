@@ -1,3 +1,4 @@
+import data_formatter as DataFormatter
 import messaging as Messaging
 from messaging import MSG_TO_SERVER_KEYS
 
@@ -32,6 +33,12 @@ if args.source is not None:
             path += 'sample.txt'
         else:
             path += args.data
+    else:
+        path += '/sample-kinect/'
+        if args.data is None:
+            path += 'sample.txt'
+        else:
+            path += args.data
 else:
     path += '/sample-kinect/'
     if args.data is None:
@@ -58,10 +65,29 @@ stop_simulating.set()
 def simulate_tracking():
     while True:
         for tracking_data_item in sample_tracking_data:
+
+            # Pause simulation is requested
             while stop_simulating.is_set():
                 pass
-            Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_DATA.name, tracking_data_item)
-            time.sleep(.09)
+
+            # Format the data according to its source
+            data_to_send = ""
+            if args.source is not None:
+                if args.source.lower() == 'stanford':
+                    data_to_send = DataFormatter.format_stanford(tracking_data_item)
+                elif args.source.lower() == 'cornell':
+                    data_to_send = DataFormatter.format_cornell(tracking_data_item)
+                else:
+                    data_to_send = tracking_data_item
+            else:
+                data_to_send = tracking_data_item
+
+            # Send the data to the server
+            if data_to_send != "":
+                Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_DATA.name, data_to_send)
+
+            time.sleep(.05)
+
 
 
 simulation_thread = threading.Thread(target=simulate_tracking)
