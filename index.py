@@ -8,7 +8,8 @@ import sys
 import time
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data', help='path to file to use as sample data')
+parser.add_argument("-s", "--source", help="source for data ('kinect', 'stanford' or 'cornell', default is cornell)")
+parser.add_argument('--data', help='name of sample data file (including file extension)')
 parser.add_argument("-v", "--verbose", action="store_true",
                     help="increase output verbosity")
 args = parser.parse_args()
@@ -16,10 +17,29 @@ args = parser.parse_args()
 
 # Sample data
 sample_tracking_data = []
-if args.data is None:
-    sample_tracking_data = open('./data/sample.txt').read().splitlines()
+
+path = './data'
+if args.source is not None:
+    if args.source.lower() == 'stanford':
+        path += '/sample-stanford/'
+        if args.data is None:
+            path += 'squatData.txt'
+        else:
+            path += args.data
+    elif args.source.lower() == 'cornell':
+        path += '/sample-cornell/'
+        if args.data is None:
+            path += 'sample.txt'
+        else:
+            path += args.data
 else:
-    sample_tracking_data = open(args.data).read().splitlines()
+    path += '/sample-kinect/'
+    if args.data is None:
+        path += 'sample.txt'
+    else:
+        path += args.data
+
+sample_tracking_data = open(path).read().splitlines()
 
 
 # Initiate Messaging
