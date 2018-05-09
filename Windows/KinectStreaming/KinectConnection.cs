@@ -44,6 +44,17 @@ namespace KinectStreaming
         public delegate void SkeletonDataHandler(string data);
         public event SkeletonDataHandler OnSkeletonData;
 
+        public delegate void TrackingStartedHandler();
+        public event TrackingStartedHandler OnTrackingStarted;
+
+        public delegate void TrackingLostHandler();
+        public event TrackingLostHandler OnTrackingLost;
+
+        /// <summary>
+        /// Keeps track of the tracking status over frames
+        /// </summary>
+        private bool isTracking = false;
+
         /// <summary>
         /// Parent-child-bone mapping (see https://msdn.microsoft.com/en-us/library/microsoft.kinect.jointtype.aspx)
         /// </summary>
@@ -145,32 +156,80 @@ namespace KinectStreaming
                     // those body objects will be re-used.
                     bodyFrame.GetAndRefreshBodyData(this.bodies);
                     dataReceived = true;
-                }
+                }  
             }
 
             if (dataReceived)
+            {
+                // We only care about the active body
+                Body body = GetActiveBody();
+
+                if (body != null)
+                {
+                    // Check if newly tracked
+                    if (!isTracking)
+                    {
+                        // Send tracking started
+                        OnTrackingStarted();
+
+                        // Set internal variable for next frame
+                        isTracking = true;
+                    }
+
+                    // Iterate through joints and build the result string
+                    SkeletonData frame_data = new SkeletonData();
+
+                    foreach (KeyValuePair<JointType, Joint> joint in body.Joints)
+                    {
+                        // Retrieve the position and convert it to millimeters
+                        JointData jointData = new JointData(new Tuple<float, float, float>(joint.Value.Position.X * 1000, joint.Value.Position.Y * 1000, joint.Value.Position.Z * 1000), parent_joints[joint.Key].ToString());
+                        frame_data.joint_data.Add(joint.Key.ToString(), jointData);
+                    }
+
+                    string result = new JavaScriptSerializer().Serialize(frame_data);
+
+                    // Send the data to listeners
+                    OnSkeletonData(result);
+                } else if (isTracking)
+                {
+                    // Send tracking lost
+                    OnTrackingLost();
+
+                    // Set internal variable for next frame
+                    isTracking = false;
+                }
+            }
+        }
+
+        private ulong currTrackingId = 0;
+        private Body GetActiveBody()
+        {
+            if (currTrackingId <= 0)
             {
                 foreach (Body body in this.bodies)
                 {
                     if (body.IsTracked)
                     {
+                        currTrackingId = body.TrackingId;
+                        return body;
+                    }
+                }
 
-                        // Iterate through joints and build the result string
-                        SkeletonData frame_data = new SkeletonData();
-
-                        foreach (KeyValuePair<JointType, Joint> joint in body.Joints)
-                        {
-                            JointData jointData = new JointData(new Tuple<float, float, float>(joint.Value.Position.X, joint.Value.Position.Y, joint.Value.Position.Z), parent_joints[joint.Key].ToString());
-                            frame_data.joint_data.Add(joint.Key.ToString(), jointData);
-                        }
-
-                        string result = new JavaScriptSerializer().Serialize(frame_data);
-
-                        // Send the data to listeners
-                        OnSkeletonData(result);
+                return null;
+            }
+            else
+            {
+                foreach (Body body in this.bodies)
+                {
+                    if (body.IsTracked && body.TrackingId == currTrackingId)
+                    {
+                        return body;
                     }
                 }
             }
+
+            currTrackingId = 0;
+            return GetActiveBody();
         }
     }
 

@@ -39,7 +39,7 @@ namespace KinectStreaming
                                         routingKey: msg.Key,
                                         basicProperties: null,
                                         body: Encoding.UTF8.GetBytes(msg.Value));
-                        Console.WriteLine("Sent: " + msg.Value);
+                        // Console.WriteLine("Sent: " + msg.Value);
                     } else
                     {
                         continue;
