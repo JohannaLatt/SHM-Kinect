@@ -11,18 +11,18 @@ namespace KinectStreaming
     /// </summary>
     public class SkeletonData
     {
-        public List<JointData> joint_data = new List<JointData>();
+        public Dictionary<string, JointData> joint_data = new Dictionary<string, JointData>();
     }
 
     public class JointData
     {
-        public string joint_type;
         public JointPosition joint_position;
+        public string joint_parent;
 
-        public JointData(string joint_type, Tuple<float, float, float> joint_position)
+        public JointData(Tuple<float, float, float> position, string parent)
         {
-            this.joint_type = joint_type;
-            this.joint_position = new JointPosition(joint_position.Item1, joint_position.Item2, joint_position.Item3);
+            joint_position = new JointPosition(position.Item1, position.Item2, position.Item3);
+            joint_parent = parent;
         }
     }
 
