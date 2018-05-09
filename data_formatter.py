@@ -110,10 +110,10 @@ def format_cornell(str):
         return ""
 
     for i in range(11, 154, 14):
-        joint_data[CORNELL_JOINTS(j).name] = {"joint_position": {"x": float(data[i]), "y": float(data[i+1]), "z": float(data[i+2])}, "joint_parent": CORNELL_JOINT_PARENTS[CORNELL_JOINTS(j).name]}
+        joint_data[CORNELL_JOINTS(j).name] = {"joint_position": {"x": float(data[i]), "y": float(data[i+1]), "z": float(data[i+2]) - 2000}, "joint_parent": CORNELL_JOINT_PARENTS[CORNELL_JOINTS(j).name]}
         j += 1
     for i in range(155, 168, 4):
-        joint_data[CORNELL_JOINTS(j).name] = {"joint_position": {"x": float(data[i]), "y": float(data[i+1]), "z": float(data[i+2])}, "joint_parent": CORNELL_JOINT_PARENTS[CORNELL_JOINTS(j).name]}
+        joint_data[CORNELL_JOINTS(j).name] = {"joint_position": {"x": float(data[i]), "y": float(data[i+1]), "z": float(data[i+2]) - 2000}, "joint_parent": CORNELL_JOINT_PARENTS[CORNELL_JOINTS(j).name]}
         j += 1
 
     return json.dumps(result)
