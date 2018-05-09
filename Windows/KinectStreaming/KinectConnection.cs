@@ -44,6 +44,44 @@ namespace KinectStreaming
         public delegate void SkeletonDataHandler(string data);
         public event SkeletonDataHandler OnSkeletonData;
 
+        /// <summary>
+        /// Parent-child-bone mapping (see https://msdn.microsoft.com/en-us/library/microsoft.kinect.jointtype.aspx)
+        /// </summary>
+        private Dictionary<JointType, JointType> parent_joints = new Dictionary<JointType, JointType>()
+            {
+                { JointType.Head, JointType.Neck },
+                { JointType.Neck, JointType.SpineShoulder },
+                { JointType.SpineShoulder, JointType.SpineShoulder },
+                { JointType.SpineBase, JointType.SpineMid },
+                { JointType.SpineMid, JointType.SpineShoulder },
+
+                { JointType.HandTipLeft, JointType.HandLeft },
+                { JointType.HandLeft, JointType.WristLeft },
+                { JointType.ThumbLeft, JointType.WristLeft },
+
+                { JointType.WristLeft, JointType.ElbowLeft },
+                { JointType.ElbowLeft, JointType.ShoulderLeft },
+                { JointType.ShoulderLeft, JointType.SpineShoulder },
+
+                { JointType.FootLeft, JointType.AnkleLeft },
+                { JointType.AnkleLeft, JointType.KneeLeft },
+                { JointType.KneeLeft, JointType.HipLeft },
+                { JointType.HipLeft, JointType.SpineBase },
+
+                { JointType.HandTipRight, JointType.HandRight },
+                { JointType.HandRight, JointType.WristRight },
+                { JointType.ThumbRight, JointType.WristRight },
+
+                { JointType.WristRight, JointType.ElbowRight },
+                { JointType.ElbowRight, JointType.ShoulderRight },
+                { JointType.ShoulderRight, JointType.SpineShoulder },
+
+                { JointType.FootRight, JointType.AnkleRight },
+                { JointType.AnkleRight, JointType.KneeRight },
+                { JointType.KneeRight, JointType.HipRight },
+                { JointType.HipRight, JointType.SpineBase }
+            };
+
         public KinectConnection()
         {
             // one sensor is currently supported
@@ -122,7 +160,8 @@ namespace KinectStreaming
 
                         foreach (KeyValuePair<JointType, Joint> joint in body.Joints)
                         {
-                            frame_data.joint_data.Add(new JointData(joint.Key.ToString(), new Tuple<float, float, float>(joint.Value.Position.X, joint.Value.Position.Y, joint.Value.Position.Z)));
+                            JointData jointData = new JointData(new Tuple<float, float, float>(joint.Value.Position.X, joint.Value.Position.Y, joint.Value.Position.Z), parent_joints[joint.Key].ToString());
+                            frame_data.joint_data.Add(joint.Key.ToString(), jointData);
                         }
 
                         string result = new JavaScriptSerializer().Serialize(frame_data);

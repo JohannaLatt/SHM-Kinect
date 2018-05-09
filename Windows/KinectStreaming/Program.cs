@@ -16,8 +16,14 @@ namespace KinectStreaming
             Console.Clear();
             Console.WriteLine("Application started. Press Esc to stop.");
 
+            Console.Write("Enter IP Address of RabbitMQ (hit enter for default): ");
+            var ip = Console.ReadLine();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = "10.171.18.216";                
+            } 
             Console.WriteLine("Loading Messaging Service..");
-            Messaging.Init();
+            Messaging.Init(ip);
             Thread messagingThread = new Thread(() => Messaging.StartMessaging(msg_queue));
             messagingThread.Start();
 

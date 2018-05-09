@@ -11,9 +11,9 @@ namespace KinectStreaming
 
         private static IModel channel;
 
-        public static void Init()
-        {
-            var factory = new ConnectionFactory() { HostName = "10.171.18.216", UserName = "Kinect", Password = "kinect" };  // Mac
+        public static void Init(string ip)
+        { 
+            var factory = new ConnectionFactory() { HostName = ip, UserName = "Kinect", Password = "kinect" };  // Mac
             var connection = factory.CreateConnection();
 
             channel = connection.CreateModel();
