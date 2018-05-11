@@ -235,12 +235,14 @@ def format_stanford(str):
     # Create joints data-structure
     j = 0
     for i in range(0, len(data), 3):
-        x = -float(data[i])
-        y = -float(data[i+1])
-        z = -float(data[i+2])
+        try:
+            x = -float(data[i])
+            y = -float(data[i+1])
+            z = -float(data[i+2])
+        except IndexError:
+            return json.dumps(result)
 
         joint_data[KINECT_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": KINECT_JOINT_PARENTS[KINECT_JOINTS(j).name]}
         j += 1
 
-    print(json.dumps(result))
     return json.dumps(result)
