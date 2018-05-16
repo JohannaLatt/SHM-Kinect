@@ -5,98 +5,98 @@ import numpy as np
 
 # ------ KINECT REFERENCE -----
 class KINECT_JOINTS(Enum):
-    SPINE_BASE = 0
-    SPINE_MID = 1
-    NECK = 2
-    HEAD = 3
-    SHOULDER_LEFT = 4
-    ELBOW_LEFT = 5
-    WRIST_LEFT = 6
-    HAND_LEFT = 7
-    SHOULDER_RIGHT = 8
-    ELBOW_RIGHT = 9
-    WRIST_RIGHT = 10
-    HAND_RIGHT = 11
-    HIP_LEFT = 12
-    KNEE_LEFT = 13
-    ANKLE_LEFT = 14
-    FOOT_LEFT = 15
-    HIP_RIGHT = 16
-    KNEE_RIGHT = 17
-    ANKLE_RIGHT = 18
-    FOOT_RIGHT = 19
-    SPINE_SHOULDER = 20
-    HAND_TIP_LEFT = 21
-    THUMB_LEFT = 22
-    HAND_TIP_RIGHT = 23
-    THUMB_RIGHT = 24
+    SpineBase = 0
+    SpineMid = 1
+    Neck = 2
+    Head = 3
+    ShoulderLeft = 4
+    ElbowLeft = 5
+    WristLeft = 6
+    HandLeft = 7
+    ShoulderRight = 8
+    ElbowRight = 9
+    WristRight = 10
+    HandRight = 11
+    HipLeft = 12
+    KneeLeft = 13
+    AnkleLeft = 14
+    FootLeft = 15
+    HipRight = 16
+    KneeRight = 17
+    AnkleRight = 18
+    FootRight = 19
+    SpineShoulder = 20
+    HandTipLeft = 21
+    ThumbLeft = 22
+    HandTipRight = 23
+    ThumbRight = 24
 
 
 KINECT_JOINT_PARENTS = {
-    'SPINE_BASE': 'SPINE_BASE',
-    'SPINE_MID': 'SPINE_BASE',
-    'NECK': 'SPINE_MID',
-    'HEAD': 'NECK',
-    'SHOULDER_LEFT': 'NECK',
-    'ELBOW_LEFT': 'SHOULDER_LEFT',
-    'WRIST_LEFT': 'ELBOW_LEFT',
-    'HAND_LEFT': 'WRIST_LEFT',
-    'SHOULDER_RIGHT': 'NECK',
-    'ELBOW_RIGHT': 'SHOULDER_RIGHT',
-    'WRIST_RIGHT': 'ELBOW_RIGHT',
-    'HAND_RIGHT': 'WRIST_RIGHT',
-    'HIP_LEFT': 'SPINE_BASE',
-    'KNEE_LEFT': 'HIP_LEFT',
-    'ANKLE_LEFT': 'KNEE_LEFT',
-    'FOOT_LEFT': 'ANKLE_LEFT',
-    'HIP_RIGHT': 'SPINE_BASE',
-    'KNEE_RIGHT': 'HIP_RIGHT',
-    'ANKLE_RIGHT': 'KNEE_RIGHT',
-    'FOOT_RIGHT': 'ANKLE_RIGHT',
-    'SPINE_SHOULDER': 'SPINE_MID',
-    'HAND_TIP_LEFT': 'HAND_LEFT',
-    'THUMB_LEFT': 'HAND_LEFT',
-    'HAND_TIP_RIGHT': 'HAND_RIGHT',
-    'THUMB_RIGHT': 'HAND_RIGHT'
+    'SpineBase': 'SpineBase',
+    'SpineMid': 'SpineBase',
+    'SpineShoulder': 'SpineMid',
+    'Neck': 'SpineShoulder',
+    'Head': 'Neck',
+    'ShoulderLeft': 'SpineShoulder',
+    'ElbowLeft': 'ShoulderLeft',
+    'WristLeft': 'ElbowLeft',
+    'HandLeft': 'WristLeft',
+    'ShoulderRight': 'SpineShoulder',
+    'ElbowRight': 'ShoulderRight',
+    'WristRight': 'ElbowRight',
+    'HandRight': 'WristRight',
+    'HipLeft': 'SpineBase',
+    'KneeLeft': 'HipLeft',
+    'AnkleLeft': 'KneeLeft',
+    'FootLeft': 'AnkleLeft',
+    'HipRight': 'SpineBase',
+    'KneeRight': 'HipRight',
+    'AnkleRight': 'KneeRight',
+    'FootRight': 'AnkleRight',
+    'HandTipLeft': 'HandLeft',
+    'ThumbLeft': 'HandLeft',
+    'HandTipRight': 'HandRight',
+    'ThumbRight': 'HandRight'
 }
 
 
 # ------- CORNELL -------
 
 class CORNELL_JOINTS(Enum):
-    HEAD = 1
-    NECK = 2
-    TORSO = 3
-    LEFT_SHOULDER = 4
-    LEFT_ELBOW = 5
-    RIGHT_SHOULDER = 6
-    RIGHT_ELBOW = 7
-    LEFT_HIP = 8
-    LEFT_KNEE = 9
-    RIGHT_HIP = 10
-    RIGHT_KNEE = 11
-    LEFT_HAND = 12
-    RIGHT_HAND = 13
-    LEFT_FOOT = 14
-    RIGHT_FOOT = 15
+    Head = 1
+    Neck = 2
+    Torso = 3
+    LeftShoulder = 4
+    LeftElbow = 5
+    RightShoulder = 6
+    RightElbow = 7
+    LeftHip = 8
+    LeftKnee = 9
+    RightHip = 10
+    RightKnee = 11
+    LeftHand = 12
+    RightHand = 13
+    LeftFoot = 14
+    RightFoot = 15
 
 
 CORNELL_JOINT_PARENTS = {
-    'HEAD': 'NECK',
-    'NECK': 'TORSO',
-    'TORSO': 'TORSO',
-    'LEFT_SHOULDER': 'NECK',
-    'LEFT_ELBOW': 'LEFT_SHOULDER',
-    'RIGHT_SHOULDER': 'NECK',
-    'RIGHT_ELBOW': 'RIGHT_SHOULDER',
-    'LEFT_HIP': 'TORSO',
-    'LEFT_KNEE': 'LEFT_HIP',
-    'RIGHT_HIP': 'TORSO',
-    'RIGHT_KNEE': 'RIGHT_HIP',
-    'LEFT_HAND': 'LEFT_ELBOW',
-    'RIGHT_HAND': 'RIGHT_ELBOW',
-    'LEFT_FOOT': 'LEFT_KNEE',
-    'RIGHT_FOOT': 'RIGHT_KNEE'
+    'Head': 'Neck',
+    'Neck': 'Torso',
+    'Torso': 'Torso',
+    'LeftShoulder': 'Neck',
+    'LeftElbow': 'LeftShoulder',
+    'RightShoulder': 'Neck',
+    'RightElbow': 'RightShoulder',
+    'LeftHip': 'Torso',
+    'LeftKnee': 'LeftHip',
+    'RightHip': 'Torso',
+    'RightKnee': 'RightHip',
+    'LeftHand': 'LeftElbow',
+    'RightHand': 'RightElbow',
+    'LeftFoot': 'LeftKnee',
+    'RightFoot': 'RightKnee'
 }
 
 
@@ -136,9 +136,9 @@ def format_cornell(str):
 class IDAHO_JOINTS(Enum):
     SPINE_BASE = 1          # aka waist
     SPINE_MID = 2           # middle between spine and chest
-    SPINE_SHOULDER = 3      # aka neck
-    NECK = 4                # aka head
-    HEAD = 5                # aka head tip
+    SPINE_SHOULDER = 3      # aka Neck
+    Neck = 4                # aka Head
+    Head = 5                # aka Head tip
     COLLAR_LEFT = 6
     SHOULDER_LEFT = 7       # aka left upper arm
     ELBOW_LEFT = 8          # aka left forearm
@@ -161,8 +161,8 @@ IDAHO_JOINT_PARENTS = {
     'SPINE_BASE': 'SPINE_BASE',
     'SPINE_MID': 'SPINE_BASE',
     'SPINE_SHOULDER': 'SPINE_MID',
-    'NECK': 'SPINE_SHOULDER',
-    'HEAD': 'NECK',
+    'Neck': 'SPINE_SHOULDER',
+    'Head': 'Neck',
     'COLLAR_LEFT': 'SPINE_SHOULDER',
     'SHOULDER_LEFT': 'COLLAR_LEFT',
     'ELBOW_LEFT': 'SHOULDER_LEFT',
