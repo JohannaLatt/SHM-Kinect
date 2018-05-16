@@ -1,10 +1,13 @@
 from enum import Enum
 import json
+import numpy as np
+
 
 # ------ KINECT REFERENCE -----
-class JOINTS(Enum):
+class KINECT_JOINTS(Enum):
     SPINE_BASE = 0
     SPINE_MID = 1
+    NECK = 2
     HEAD = 3
     SHOULDER_LEFT = 4
     ELBOW_LEFT = 5
@@ -27,35 +30,34 @@ class JOINTS(Enum):
     THUMB_LEFT = 22
     HAND_TIP_RIGHT = 23
     THUMB_RIGHT = 24
-    NONE = 25
 
 
-JOINT_PARENTS = {
-    JOINTS.SPINE_BASE: JOINTS.NONE,
-    JOINTS.SPINE_MID: JOINTS.SPINE_BASE,
-    JOINTS.HEAD: JOINTS.SPINE_MID,
-    JOINTS.SHOULDER_LEFT: JOINTS.SPINE_SHOULDER,
-    JOINTS.ELBOW_LEFT: JOINTS.SHOULDER_LEFT,
-    JOINTS.WRIST_LEFT: JOINTS.ELBOW_LEFT,
-    JOINTS.HAND_LEFT: JOINTS.WRIST_LEFT,
-    JOINTS.SHOULDER_RIGHT: JOINTS.SPINE_SHOULDER,
-    JOINTS.ELBOW_RIGHT: JOINTS.SHOULDER_RIGHT,
-    JOINTS.WRIST_RIGHT: JOINTS.ELBOW_RIGHT,
-    JOINTS.HAND_RIGHT: JOINTS.WRIST_RIGHT,
-    JOINTS.HIP_LEFT: JOINTS.SPINE_BASE,
-    JOINTS.KNEE_LEFT: JOINTS.HIP_LEFT,
-    JOINTS.ANKLE_LEFT: JOINTS.KNEE_LEFT,
-    JOINTS.FOOT_LEFT: JOINTS.ANKLE_LEFT,
-    JOINTS.HIP_RIGHT: JOINTS.SPINE_BASE,
-    JOINTS.KNEE_RIGHT: JOINTS.HIP_RIGHT,
-    JOINTS.ANKLE_RIGHT: JOINTS.KNEE_RIGHT,
-    JOINTS.FOOT_RIGHT: JOINTS.ANKLE_RIGHT,
-    JOINTS.SPINE_SHOULDER: JOINTS.SPINE_MID,
-    JOINTS.HAND_TIP_LEFT: JOINTS.HAND_LEFT,
-    JOINTS.THUMB_LEFT: JOINTS.HAND_LEFT,
-    JOINTS.HAND_TIP_RIGHT: JOINTS.HAND_RIGHT,
-    JOINTS.THUMB_RIGHT: JOINTS.HAND_RIGHT,
-    JOINTS.NONE: JOINTS.NONE
+KINECT_JOINT_PARENTS = {
+    'SPINE_BASE': 'SPINE_BASE',
+    'SPINE_MID': 'SPINE_BASE',
+    'NECK': 'SPINE_MID',
+    'HEAD': 'NECK',
+    'SHOULDER_LEFT': 'NECK',
+    'ELBOW_LEFT': 'SHOULDER_LEFT',
+    'WRIST_LEFT': 'ELBOW_LEFT',
+    'HAND_LEFT': 'WRIST_LEFT',
+    'SHOULDER_RIGHT': 'NECK',
+    'ELBOW_RIGHT': 'SHOULDER_RIGHT',
+    'WRIST_RIGHT': 'ELBOW_RIGHT',
+    'HAND_RIGHT': 'WRIST_RIGHT',
+    'HIP_LEFT': 'SPINE_BASE',
+    'KNEE_LEFT': 'HIP_LEFT',
+    'ANKLE_LEFT': 'KNEE_LEFT',
+    'FOOT_LEFT': 'ANKLE_LEFT',
+    'HIP_RIGHT': 'SPINE_BASE',
+    'KNEE_RIGHT': 'HIP_RIGHT',
+    'ANKLE_RIGHT': 'KNEE_RIGHT',
+    'FOOT_RIGHT': 'ANKLE_RIGHT',
+    'SPINE_SHOULDER': 'SPINE_MID',
+    'HAND_TIP_LEFT': 'HAND_LEFT',
+    'THUMB_LEFT': 'HAND_LEFT',
+    'HAND_TIP_RIGHT': 'HAND_RIGHT',
+    'THUMB_RIGHT': 'HAND_RIGHT'
 }
 
 
@@ -110,16 +112,16 @@ def format_cornell(str):
         return ""
 
     for i in range(11, 154, 14):
-        x = float(data[i])      # in meters
-        y = float(data[i+1])    # in meters
-        z = float(data[i+2])    # in meters
+        x = float(data[i])
+        y = float(data[i+1])
+        z = float(data[i+2])
 
         joint_data[CORNELL_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": CORNELL_JOINT_PARENTS[CORNELL_JOINTS(j).name]}
         j += 1
     for i in range(155, 168, 4):
-        x = float(data[i])     # in meters
-        y = float(data[i+1])   # in meters
-        z = float(data[i+2])   # in meters
+        x = float(data[i])
+        y = float(data[i+1])
+        z = float(data[i+2])
 
         joint_data[CORNELL_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": CORNELL_JOINT_PARENTS[CORNELL_JOINTS(j).name]}
         j += 1
@@ -127,6 +129,120 @@ def format_cornell(str):
     return json.dumps(result)
 
 
+
+
+# ------- IDAHO -------
+
+class IDAHO_JOINTS(Enum):
+    SPINE_BASE = 1          # aka waist
+    SPINE_MID = 2           # middle between spine and chest
+    SPINE_SHOULDER = 3      # aka neck
+    NECK = 4                # aka head
+    HEAD = 5                # aka head tip
+    COLLAR_LEFT = 6
+    SHOULDER_LEFT = 7       # aka left upper arm
+    ELBOW_LEFT = 8          # aka left forearm
+    WRIST_LEFT = 9          # aka left hand
+    COLLAR_RIGHT = 10
+    SHOULDER_RIGHT = 11
+    ELBOW_RIGHT = 12
+    WRIST_RIGHT = 13
+    HIP_LEFT = 14           # aka left upper lef
+    KNEE_LEFT = 15          # aka left lower leg
+    ANKLE_LEFT = 16         # aka left foot
+    FOOT_LEFT = 17          # aka left leg toes
+    HIP_RIGHT = 18
+    KNEE_RIGHT = 19
+    ANKLE_RIGHT = 20
+    FOOT_RIGHT = 21
+
+
+IDAHO_JOINT_PARENTS = {
+    'SPINE_BASE': 'SPINE_BASE',
+    'SPINE_MID': 'SPINE_BASE',
+    'SPINE_SHOULDER': 'SPINE_MID',
+    'NECK': 'SPINE_SHOULDER',
+    'HEAD': 'NECK',
+    'COLLAR_LEFT': 'SPINE_SHOULDER',
+    'SHOULDER_LEFT': 'COLLAR_LEFT',
+    'ELBOW_LEFT': 'SHOULDER_LEFT',
+    'WRIST_LEFT': 'ELBOW_LEFT',
+    'COLLAR_RIGHT': 'SPINE_SHOULDER',
+    'SHOULDER_RIGHT': 'COLLAR_RIGHT',
+    'ELBOW_RIGHT': 'SHOULDER_RIGHT',
+    'WRIST_RIGHT': 'ELBOW_RIGHT',
+    'HIP_LEFT': 'SPINE_BASE',
+    'KNEE_LEFT': 'HIP_LEFT',
+    'ANKLE_LEFT': 'KNEE_LEFT',
+    'FOOT_LEFT': 'ANKLE_LEFT',
+    'HIP_RIGHT': 'SPINE_BASE',
+    'KNEE_RIGHT': 'HIP_RIGHT',
+    'ANKLE_RIGHT': 'KNEE_RIGHT',
+    'FOOT_RIGHT': 'ANKLE_RIGHT'
+}
+
+
+def format_idaho(str):
+    result = {"joint_data": {}}
+    joint_data = result["joint_data"]
+    data = str.split("  ")
+    print(data)
+    data = np.array(data)          # turn into floats
+    data = [float(x) for x in data]
+    data = [x * 10 for x in data]
+
+    # Create joints data-structure
+    # SpineBase aka Waist (absolute)
+    spine_x = data[0]
+    spine_y = data[1]
+    spine_z = data[2]
+    joint_data[IDAHO_JOINTS(1).name] = {"joint_position": {"x": spine_x, "y": spine_y, "z": spine_z}, "joint_parent": IDAHO_JOINT_PARENTS[IDAHO_JOINTS(1).name]}
+
+    # Spine Mid (9)avg of Spine and Chest)
+    x = ((data[3] + data[6]) / 2) + spine_x
+    y = ((data[4] + data[7]) / 2) + spine_y
+    z = ((data[5] + data[8]) / 2) + spine_z
+    joint_data[IDAHO_JOINTS(2).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": IDAHO_JOINT_PARENTS[IDAHO_JOINTS(2).name]}
+
+    # All other joints
+    j = 3
+    for i in range(9, len(data) - 1, 3):     # -1 since we averaged two the parent joint
+        # Get the parent position (parent is always already in the joint_data)
+        par_pos = joint_data[IDAHO_JOINT_PARENTS[IDAHO_JOINTS(j).name]]["joint_position"]
+
+        # Get the current joint's absolute position
+        x = float(data[i] + par_pos["x"])      # in meters and removing relativity to the parent joint
+        y = float(data[i+1] + par_pos["y"])    # in meters and removing relativity to the parent joint
+        z = float(data[i+2] + par_pos["z"])    # in meters and removing relativity to the parent joint
+
+        joint_data[IDAHO_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": IDAHO_JOINT_PARENTS[IDAHO_JOINTS(j).name]}
+        j += 1
+
+    print(json.dumps(result))
+    return json.dumps(result)
+
+
+# ------- STANFORD -------
+
 def format_stanford(str):
-    # TODO
-    return str
+    result = {"joint_data": {}}
+    joint_data = result["joint_data"]
+    data = str.split(",")
+    data = np.array(data)           # turn into floats
+    data = [float(x) for x in data]
+    data = [x * 5 for x in data]
+
+    # Create joints data-structure
+    j = 0
+    for i in range(0, len(data), 3):
+        try:
+            x = -float(data[i])
+            y = -float(data[i+1])
+            z = -float(data[i+2])
+        except IndexError:
+            return json.dumps(result)
+
+        joint_data[KINECT_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": KINECT_JOINT_PARENTS[KINECT_JOINTS(j).name]}
+        j += 1
+
+    return json.dumps(result)

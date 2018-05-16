@@ -10,9 +10,8 @@ import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--source", help="source for data ('kinect', 'stanford' or 'cornell', default is cornell)")
-parser.add_argument('--data', help='name of sample data file (including file extension)')
-parser.add_argument("-v", "--verbose", action="store_true",
-                    help="increase output verbosity")
+parser.add_argument('-f', "--filename", help='name of sample data file (including file extension)')
+parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity")
 args = parser.parse_args()
 
 
@@ -21,30 +20,36 @@ sample_tracking_data = []
 
 path = './data'
 if args.source is not None:
-    if args.source.lower() == 'stanford':
-        path += '/sample-stanford/'
-        if args.data is None:
-            path += 'squatData.txt'
+    if args.source.lower() == 'idaho':
+        path += '/sample-idaho/'
+        if args.filename is None:
+            path += 'sample.txt'
         else:
-            path += args.data
+            path += args.filename
+    elif args.source.lower() == 'stanford':
+        path += '/sample-stanford/'
+        if args.filename is None:
+            path += 'sample_squat.txt'
+        else:
+            path += args.filename
     elif args.source.lower() == 'cornell':
         path += '/sample-cornell/'
-        if args.data is None:
+        if args.filename is None:
             path += 'sample.txt'
         else:
-            path += args.data
+            path += args.filename
     else:
         path += '/sample-kinect/'
-        if args.data is None:
+        if args.filename is None:
             path += 'sample.txt'
         else:
-            path += args.data
+            path += args.filename
 else:
     path += '/sample-kinect/'
-    if args.data is None:
+    if args.filename is None:
         path += 'sample.txt'
     else:
-        path += args.data
+        path += args.filename
 
 sample_tracking_data = open(path).read().splitlines()
 
@@ -73,7 +78,9 @@ def simulate_tracking():
             # Format the data according to its source
             data_to_send = ""
             if args.source is not None:
-                if args.source.lower() == 'stanford':
+                if args.source.lower() == 'idaho':
+                    data_to_send = DataFormatter.format_idaho(tracking_data_item)
+                elif args.source.lower() == 'stanford':
                     data_to_send = DataFormatter.format_stanford(tracking_data_item)
                 elif args.source.lower() == 'cornell':
                     data_to_send = DataFormatter.format_cornell(tracking_data_item)
@@ -87,7 +94,6 @@ def simulate_tracking():
                 Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_DATA.name, data_to_send)
 
             time.sleep(.05)
-
 
 
 simulation_thread = threading.Thread(target=simulate_tracking)
