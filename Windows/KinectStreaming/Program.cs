@@ -64,7 +64,7 @@ namespace KinectStreaming
 
         private static void SendTrackingLost()
         {
-            Console.WriteLine("TRACKING_LOST");        
+            Console.WriteLine("TRACKING_LOST");   
             msg_queue.Enqueue(new KeyValuePair<string, string>("TRACKING_LOST", ""));
         }
     }
