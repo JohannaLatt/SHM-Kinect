@@ -240,9 +240,14 @@ def format_stanford(str):
             y = -float(data[i+1])
             z = -float(data[i+2])
         except IndexError:
-            return json.dumps(result)
+            print("[Kinect][DataFormatter] Incomplete item, not sending")
+            return ""
 
         joint_data[KINECT_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": KINECT_JOINT_PARENTS[KINECT_JOINTS(j).name]}
         j += 1
 
-    return json.dumps(result)
+    if (j == 25):   # only return if data complete
+        return json.dumps(result)
+    else:
+        print("[Kinect][DataFormatter] Incomplete item, not sending")
+        return ""
