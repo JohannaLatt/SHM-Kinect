@@ -236,7 +236,7 @@ def format_stanford(str):
     j = 0
     for i in range(0, len(data), 3):
         try:
-            x = -float(data[i])
+            x = -float(data[i]) + 1000 # move the data more to the center
             y = -float(data[i+1])
             z = -float(data[i+2])
         except IndexError:
