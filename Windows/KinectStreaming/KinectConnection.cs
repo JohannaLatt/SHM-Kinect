@@ -139,13 +139,13 @@ namespace KinectStreaming
                     }
 
                     // Iterate through joints and build the result string
-                    SkeletonData frame_data = new SkeletonData();
+                    Dictionary<string, float[]> frame_data = new Dictionary<string, float[]>();
 
                     foreach (KeyValuePair<JointType, Joint> joint in body.Joints)
                     {
                         // Retrieve the position and convert it to millimeters
                         float[] jointData = new float[] { joint.Value.Position.X * 1000, joint.Value.Position.Y * 1000, joint.Value.Position.Z * 1000 };
-                        frame_data.joint_data.Add(joint.Key.ToString(), jointData);
+                        frame_data.Add(joint.Key.ToString(), jointData);
                     }
 
                     string result = new JavaScriptSerializer().Serialize(frame_data);
