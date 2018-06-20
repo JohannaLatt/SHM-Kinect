@@ -20,13 +20,7 @@ sample_tracking_data = []
 
 path = './data'
 if args.source is not None:
-    if args.source.lower() == 'idaho':
-        path += '/sample-idaho/'
-        if args.filename is None:
-            path += 'sample.txt'
-        else:
-            path += args.filename
-    elif args.source.lower() == 'stanford':
+    if args.source.lower() == 'stanford':
         path += '/sample-stanford/'
         if args.filename is None:
             path += 'sample_squat.txt'
@@ -78,9 +72,7 @@ def simulate_tracking():
             # Format the data according to its source
             data_to_send = ""
             if args.source is not None:
-                if args.source.lower() == 'idaho':
-                    data_to_send = DataFormatter.format_idaho(tracking_data_item)
-                elif args.source.lower() == 'stanford':
+                if args.source.lower() == 'stanford':
                     data_to_send = DataFormatter.format_stanford(tracking_data_item)
                 elif args.source.lower() == 'cornell':
                     data_to_send = DataFormatter.format_cornell(tracking_data_item)
