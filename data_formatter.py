@@ -225,8 +225,7 @@ def format_idaho(str):
 # ------- STANFORD -------
 
 def format_stanford(str):
-    result = {"joint_data": {}}
-    joint_data = result["joint_data"]
+    result = {}
     data = str.split(",")
     data = np.array(data)           # turn into floats
     data = [float(x) for x in data]
@@ -236,14 +235,14 @@ def format_stanford(str):
     j = 0
     for i in range(0, len(data), 3):
         try:
-            x = -float(data[i]) + 1000 # move the data more to the center
+            x = float(data[i]) - 1500 # move the data more to the center
             y = -float(data[i+1])
             z = -float(data[i+2])
         except IndexError:
             print("[Kinect][DataFormatter] Incomplete item, not sending")
             return ""
 
-        joint_data[KINECT_JOINTS(j).name] = {"joint_position": {"x": x, "y": y, "z": z}, "joint_parent": KINECT_JOINT_PARENTS[KINECT_JOINTS(j).name]}
+        result[KINECT_JOINTS(j).name] = [ x, y, z ]
         j += 1
 
     if (j == 25):   # only return if data complete
