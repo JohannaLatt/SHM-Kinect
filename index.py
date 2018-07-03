@@ -7,6 +7,7 @@ import threading
 import argparse
 import sys
 import time
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--source", help="source for data ('kinect', 'stanford' or 'cornell', default is cornell)")
@@ -35,13 +36,13 @@ if args.source is not None:
     else:
         path += '/sample-kinect/'
         if args.filename is None:
-            path += 'sample.txt'
+            path += 'sample.log'
         else:
             path += args.filename
 else:
     path += '/sample-kinect/'
     if args.filename is None:
-        path += 'sample.txt'
+        path += 'sample.log'
     else:
         path += args.filename
 
@@ -98,7 +99,7 @@ while(True):
         stop_simulating.set()
         Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_LOST.name, '')
         print('Exiting..')
-        sys.exit()
+        os._exit(0)
     elif input_key == "p":
         stop_simulating.set()
         Messaging.send(MSG_TO_SERVER_KEYS.TRACKING_LOST.name, '')
