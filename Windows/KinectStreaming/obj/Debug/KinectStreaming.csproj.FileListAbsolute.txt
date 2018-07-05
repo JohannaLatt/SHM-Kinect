@@ -40,3 +40,6 @@ C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\K
 C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Debug\KinectStreaming.csproj.CopyComplete
 C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Debug\KinectStreaming.exe
 C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Debug\KinectStreaming.pdb
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Debug\KinectStreaming.exe.config
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Debug\KinectStreaming.exe
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Debug\KinectStreaming.pdb
