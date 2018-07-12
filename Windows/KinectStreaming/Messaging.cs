@@ -17,11 +17,9 @@ namespace KinectStreaming
             var connection = factory.CreateConnection();
 
             channel = connection.CreateModel();
-            channel.QueueDeclare(queue: "queue-from-kinect",
-                                durable: false,
-                                exclusive: false,
-                                autoDelete: false,
-                                arguments: null);
+
+            channel.ExchangeDeclare(exchange: "from-kinect-skeleton", type: "fanout");
+            channel.ExchangeDeclare(exchange: "from-kinect-color", type: "fanout");
         }
 
         public static void StartMessaging(ConcurrentQueue<KeyValuePair<string, string>> msg_queue)
@@ -35,10 +33,20 @@ namespace KinectStreaming
                     KeyValuePair<string, string> msg = new KeyValuePair<string, string>();
                     if (msg_queue.TryDequeue(out msg))
                     {
-                        channel.BasicPublish(exchange: "from-kinect",
+                        if (msg.Key.Equals('COLOR_DATA'))
+                        {
+                            channel.BasicPublish(exchange: "from-kinect-color",
                                         routingKey: msg.Key,
                                         basicProperties: null,
                                         body: Encoding.UTF8.GetBytes(msg.Value));
+                        }
+                        else
+                        {
+                            channel.BasicPublish(exchange: "from-kinect-skeleton",
+                                        routingKey: msg.Key,
+                                        basicProperties: null,
+                                        body: Encoding.UTF8.GetBytes(msg.Value));
+                        }
                         // Console.WriteLine("Sent: " + msg.Value);
                     } else
                     {

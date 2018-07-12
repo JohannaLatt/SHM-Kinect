@@ -24,6 +24,11 @@ namespace KinectStreaming
         private BodyFrameReader bodyFrameReader = null;
 
         /// <summary>
+        /// Reader for color frames
+        /// </summary>
+        private ColorFrameReader colorFrameReader = null;
+
+        /// <summary>
         /// Array for the bodies
         /// </summary>
         private Body[] bodies = null;
@@ -50,6 +55,9 @@ namespace KinectStreaming
         public delegate void TrackingLostHandler();
         public event TrackingLostHandler OnTrackingLost;
 
+        public delegate void ColorDataHandler(byte[] data);
+        public event ColorDataHandler OnColorData;
+
         /// <summary>
         /// Keeps track of the tracking status over frames
         /// </summary>
@@ -59,6 +67,15 @@ namespace KinectStreaming
         {
             // one sensor is currently supported
             this.kinectSensor = KinectSensor.GetDefault();
+            
+            // open the reader for the color frames
+            this.colorFrameReader = this.kinectSensor.ColorFrameSource.OpenReader();
+
+            // wire handler for frame arrival
+            this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
+
+            // create the colorFrameDescription from the ColorFrameSource using Bgra format
+            FrameDescription colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
 
             // get the coordinate mapper
             this.coordinateMapper = this.kinectSensor.CoordinateMapper;
@@ -159,6 +176,28 @@ namespace KinectStreaming
 
                     // Set internal variable for next frame
                     isTracking = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the color frame data arriving from the sensor
+        /// </summary>
+        /// <param name="sender">object sending the event</param>
+        /// <param name="e">event arguments</param>
+        private void Reader_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
+        {
+            // ColorFrame is IDisposable
+            using (ColorFrame colorFrame = e.FrameReference.AcquireFrame())
+            {
+                if (colorFrame != null)
+                {
+                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
+
+                    byte[] cFrameData = new byte[4 * colorFrameDescription.Width * colorFrameDescription.Height];
+                    colorFrame.CopyConvertedFrameDataToArray(cFrameData, ColorImageFormat.Bgra);
+
+                    OnColorData(cFrameData);
                 }
             }
         }
