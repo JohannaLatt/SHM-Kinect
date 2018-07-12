@@ -33,7 +33,7 @@ namespace KinectStreaming
             Console.WriteLine("Kinect connected. Waiting for skeleton data..");
             kinect.OnSkeletonData += PrintSkeletonData;
             kinect.OnSkeletonData += SendSkeletonData;
-            kinect.OnColorData += SendColorData;
+            // kinect.OnColorData += SendColorData;
             kinect.OnTrackingStarted += SendTrackingStarted;
             kinect.OnTrackingLost += SendTrackingLost;
 
@@ -49,7 +49,7 @@ namespace KinectStreaming
 
         private static void PrintSkeletonData(string data)
         {
-            Console.WriteLine(data);
+            Console.WriteLine(data.Substring(0, 50));
         }
 
         private static void SendSkeletonData(string data)

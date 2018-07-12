@@ -12,3 +12,15 @@ C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\K
 C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Release\KinectStreaming.csproj.CopyComplete
 C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Release\KinectStreaming.exe
 C:\Users\Dudley Lab\Documents\Master Thesis\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Release\KinectStreaming.pdb
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\KinectStreaming.exe.config
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Release\KinectStreaming.exe
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Release\KinectStreaming.pdb
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\obj\Release\KinectStreaming.csprojResolveAssemblyReference.cache
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\KinectStreaming.exe
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\KinectStreaming.pdb
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\Microsoft.Diagnostics.Tracing.EventSource.dll
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\Microsoft.Kinect.dll
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\RabbitMQ.Client.dll
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\Microsoft.Diagnostics.Tracing.EventSource.xml
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\Microsoft.Kinect.xml
+C:\Users\Johanna\Repositories\Smart-Health-Mirror\Kinect\Windows\KinectStreaming\bin\Release\RabbitMQ.Client.xml

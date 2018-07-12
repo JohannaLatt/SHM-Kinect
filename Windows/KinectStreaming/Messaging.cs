@@ -17,8 +17,8 @@ namespace KinectStreaming
 
             channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: "from-kinect-skeleton", type: "fanout");
-            channel.ExchangeDeclare(exchange: "from-kinect-color", type: "fanout");
+            channel.ExchangeDeclare(exchange: "from-kinect-skeleton", type: "direct");
+            channel.ExchangeDeclare(exchange: "from-kinect-color", type: "direct");
         }
 
         public static void StartMessaging(ConcurrentQueue<KeyValuePair<string, byte[]>> msg_queue)
@@ -46,13 +46,8 @@ namespace KinectStreaming
                                         basicProperties: null,
                                         body: msg.Value);
                         }
-                        msg.Value = null;
-                        GC.Collect();
-                        Console.WriteLine("Sent: " + System.Text.Encoding.UTF8.GetString(msg.Value));
-                    } else
-                    {
-                        continue;
                     }
+                   
                 }
             }
         }
