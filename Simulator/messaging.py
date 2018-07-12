@@ -27,7 +27,7 @@ def init(verbose):
     __channel = connection.channel()
 
     # Create an exchange for the mirror-messages - type is direct so we can distinguish the different messages
-    __channel.exchange.declare(exchange='from-kinect', exchange_type='direct')
+    __channel.exchange.declare(exchange='from-kinect-skeleton', exchange_type='direct')
 
 
 def start_sending():
