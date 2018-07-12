@@ -35,7 +35,7 @@ def start_sending():
         item = queue.get()
         if item is None:
             continue
-        __channel.basic.publish(exchange='from-kinect',
+        __channel.basic.publish(exchange='from-kinect-skeleton',
                           routing_key=item['key'],
                           body=item['body'])
         if v:
