@@ -2,14 +2,14 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using RabbitMQ.Client;
+using System.Text;
 
 namespace KinectStreaming
 {
     class Program
     {
 
-        private static ConcurrentQueue<KeyValuePair<string, string>> msg_queue = new ConcurrentQueue<KeyValuePair<string, string>>();
+        private static ConcurrentQueue<KeyValuePair<string, byte[]>> msg_queue = new ConcurrentQueue<KeyValuePair<string, byte[]>>();
 
         static void Main(string[] args)
         {
@@ -54,24 +54,24 @@ namespace KinectStreaming
 
         private static void SendSkeletonData(string data)
         {
-            msg_queue.Enqueue(new KeyValuePair<string, string>("TRACKING_DATA", data));
+            msg_queue.Enqueue(new KeyValuePair<string, byte[]>("TRACKING_DATA", Encoding.UTF8.GetBytes(data)));
         }
 
-        private static void SendColorData(string data)
+        private static void SendColorData(byte[] data)
         {
-            msg_queue.Enqueue(new KeyValuePair<string, string>("COLOR_DATA", data));
+            msg_queue.Enqueue(new KeyValuePair<string, byte[]>("COLOR_DATA", data));
         }
 
         private static void SendTrackingStarted()
         {
             Console.WriteLine("TRACKING_STARTED");
-            msg_queue.Enqueue(new KeyValuePair<string, string>("TRACKING_STARTED", ""));
+            msg_queue.Enqueue(new KeyValuePair<string, byte[]>("TRACKING_STARTED", Encoding.UTF8.GetBytes("")));
         }
 
         private static void SendTrackingLost()
         {
             Console.WriteLine("TRACKING_LOST");   
-            msg_queue.Enqueue(new KeyValuePair<string, string>("TRACKING_LOST", ""));
+            msg_queue.Enqueue(new KeyValuePair<string, byte[]>("TRACKING_LOST", Encoding.UTF8.GetBytes("")));
         }
     }
 

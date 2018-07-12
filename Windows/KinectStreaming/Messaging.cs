@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 
 namespace KinectStreaming
 {
@@ -22,7 +21,7 @@ namespace KinectStreaming
             channel.ExchangeDeclare(exchange: "from-kinect-color", type: "fanout");
         }
 
-        public static void StartMessaging(ConcurrentQueue<KeyValuePair<string, string>> msg_queue)
+        public static void StartMessaging(ConcurrentQueue<KeyValuePair<string, byte[]>> msg_queue)
         {
             if (channel == null)
                 Console.WriteLine("Error! Channel not initialized yet.");
@@ -30,24 +29,26 @@ namespace KinectStreaming
             {
                 while (true)
                 {
-                    KeyValuePair<string, string> msg = new KeyValuePair<string, string>();
+                    KeyValuePair<string, byte[]> msg = new KeyValuePair<string, byte[]>();
                     if (msg_queue.TryDequeue(out msg))
                     {
-                        if (msg.Key.Equals('COLOR_DATA'))
+                        if (msg.Key.Equals("COLOR_DATA"))
                         {
                             channel.BasicPublish(exchange: "from-kinect-color",
                                         routingKey: msg.Key,
                                         basicProperties: null,
-                                        body: Encoding.UTF8.GetBytes(msg.Value));
+                                        body: msg.Value);
                         }
                         else
                         {
                             channel.BasicPublish(exchange: "from-kinect-skeleton",
                                         routingKey: msg.Key,
                                         basicProperties: null,
-                                        body: Encoding.UTF8.GetBytes(msg.Value));
+                                        body: msg.Value);
                         }
-                        // Console.WriteLine("Sent: " + msg.Value);
+                        msg.Value = null;
+                        GC.Collect();
+                        Console.WriteLine("Sent: " + System.Text.Encoding.UTF8.GetString(msg.Value));
                     } else
                     {
                         continue;

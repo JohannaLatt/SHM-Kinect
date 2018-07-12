@@ -104,6 +104,12 @@ namespace KinectStreaming
                 this.bodyFrameReader.Dispose();
                 this.bodyFrameReader = null;
             }
+            if (this.colorFrameReader != null)
+            {
+                // BodyFrameReader is IDisposable
+                this.colorFrameReader.Dispose();
+                this.colorFrameReader = null;
+            }
 
             if (this.kinectSensor != null)
             {
