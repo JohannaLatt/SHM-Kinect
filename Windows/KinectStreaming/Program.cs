@@ -20,7 +20,7 @@ namespace KinectStreaming
             var ip = Console.ReadLine();
             if (string.IsNullOrEmpty(ip))
             {
-                ip = "10.171.18.216";                
+                ip = "localhost";                
             } 
             Console.WriteLine("Loading Messaging Service..");
             Messaging.Init(ip);
@@ -31,7 +31,7 @@ namespace KinectStreaming
             KinectConnection kinect = new KinectConnection();
 
             Console.WriteLine("Kinect connected. Waiting for skeleton data..");
-            kinect.OnSkeletonData += PrintSkeletonData;
+            // kinect.OnSkeletonData += PrintSkeletonData;
             kinect.OnSkeletonData += SendSkeletonData;
             // kinect.OnColorData += SendColorData;
             kinect.OnTrackingStarted += SendTrackingStarted;
