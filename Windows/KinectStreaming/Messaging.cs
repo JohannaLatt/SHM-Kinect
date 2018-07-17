@@ -34,20 +34,20 @@ namespace KinectStreaming
                     {
                         if (msg.Key.Equals("COLOR_DATA"))
                         {
-                            channel.BasicPublish(exchange: "from-kinect-color",
-                                        routingKey: msg.Key,
-                                        basicProperties: null,
-                                        body: msg.Value);
-                        }
-                        else
-                        {
                             // TODO: Switch to UDP streaming for this, RabbitMQ is too slow and cannot handle this 
                             // many messages, resulting in an out of memory exception
-                            //channel.BasicPublish(exchange: "from-kinect-skeleton",
-                            //            routingKey: msg.Key,
+                            //channel.BasicPublish(exchange: "from-kinect-color",
+                            //             routingKey: msg.Key,
                             //            basicProperties: null,
                             //            body: msg.Value);
                             continue;
+                        }
+                        else
+                        {                         
+                            channel.BasicPublish(exchange: "from-kinect-skeleton",
+                                        routingKey: msg.Key,
+                                        basicProperties: null,
+                                        body: msg.Value);
                         }
                     }
                    
